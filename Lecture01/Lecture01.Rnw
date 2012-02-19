@@ -1,0 +1,1029 @@
+%%
+%%  PRODUCE SLIDES
+\documentclass[c]{beamer}
+
+%% 
+%% PRODUCE HANDOUTS
+%\documentclass[c,handout]{beamer} %- handout version of talk
+%\usepackage{pgfpages}
+%\pgfpagesuselayout{4 on 1}[letterpaper, landscape , border shrink=5mm]
+%\pgfpagesuselayout{2 on 1}[letterpaper, border shrink=5mm]
+
+%%
+%% PACKAGES
+\usepackage[latin1]{inputenc}
+\usefonttheme{professionalfonts}
+\usepackage{times}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{verbatim}
+\usetikzlibrary{arrows,shapes}
+
+%%
+%% DOCUMENT INFORMATION
+\title{Introduction to R\\EEB C119/C219}
+\author{Christopher C. Strelioff}
+\date{Jan 2012}
+
+%%
+%% COLORS
+\definecolor{grn}{rgb}{.0941,.421,.019}
+\definecolor{blu}{rgb}{0.0,.235,.529}
+%% 
+%% ASSIGN COLORS TO FRAME COMPONENTS
+\setbeamercolor{title}{fg=grn!100,bg=white!100}
+\setbeamercolor{footline}{fg=black!100,bg=white!100}
+\setbeamercolor{frametitle}{fg=grn!100,bg=white!100}
+
+%%
+%% FOOTER SETUP
+\setbeamertemplate{footline}
+{\leavevmode
+\begin{beamercolorbox}[width=.9\paperwidth]{section in head/foot}
+\vskip2pt
+\tiny\quad Introduction to R -- EEB C119/C219
+\hfill
+\tiny\quad Slide \hskip1pt \insertframenumber \hskip2pt of \inserttotalframenumber~~
+\vskip0.5em
+\end{beamercolorbox}
+}% END setbeamertemplate footline
+
+%% 
+%% NO NAVIGATION SYMBOLS
+\setbeamertemplate{navigation symbols}{}
+
+%%
+%% NEW COMMANDS
+\newenvironment{packed_item}{
+\begin{itemize}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}{\end{itemize}}
+\newenvironment{spread_item}{
+\begin{itemize}
+  \setlength{\itemsep}{7.5pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}{\end{itemize}}
+
+%% circles for itemize
+\useinnertheme{circles}
+
+
+\begin{document}
+
+%%
+%% title
+%%
+\section{Title Slide}
+
+%%
+%%
+\begin{frame}
+
+\begin{center}
+
+{\color{grn} \huge Introduction to R}
+
+\vskip10pt
+
+EEB C119/C219 (Winter 2012)
+
+\vskip20pt
+
+
+\vskip15pt
+Christopher C.~Strelioff
+
+\end{center}
+
+\end{frame}
+
+%%
+%% Overview
+\section{Overview}
+
+%%
+%% 
+\begin{frame}
+\frametitle{Overview}
+\framesubtitle{Goals for the lectures}
+
+ \begin{spread_item}
+   \item Immediate goals\\[0.5em]
+   \begin{spread_item}
+     \item Learn basics of R
+     \item Learn to use command line/terminal
+     \item Program discrete time and ODE models
+   \end{spread_item}
+   \item Bigger picture\\[0.5em]
+   \begin{spread_item}
+     \item Computing and mathematical skills are valuable (jobs)
+     \item Science -- manage lots of data
+     \item Empowering -- don't wait for someone else to write the program, you 
+     can do it yourself
+   \end{spread_item}   
+ \end{spread_item}
+
+\end{frame}
+
+%%
+%% 
+\begin{frame}
+\frametitle{Why R?}
+%\framesubtitle{Goals for the lectures}
+
+ \begin{spread_item}
+   \item R is widely used in all areas of biology\\[0.5em]
+   \begin{spread_item}
+     \item Many statistics classes employ R
+   \end{spread_item}
+   \item R is free\\[0.5em]
+   \begin{spread_item}
+     \item You can use R for free in Win, Mac, Linux worlds
+     \item Active users and developers for R
+   \end{spread_item}   
+   \item R is a scripting language with lots of tools\\[0.5em]
+   \begin{spread_item}
+     \item Code (programs) are simple text files, quickly executed (no compiling)
+     \item Package for ODEs, complex stats models already available
+     \item Plotting, general programming, etc. all easily done
+   \end{spread_item}    
+ \end{spread_item}
+
+\end{frame}
+
+%%
+%% 
+\section{Using R}
+
+%%
+%% 
+\begin{frame}
+\frametitle{Using R}
+\framesubtitle{Many ways to interact with R}
+
+   \begin{spread_item}
+     \item Command line\\[0.5em]
+     \begin{spread_item}
+       \item Good for quick calculations, plotting (and learning)
+     \end{spread_item}
+     \item Scripts {\bf +} command line \\[0.5em]
+     \begin{spread_item}
+       \item Most general approach
+       \item Repeatable science with scripts
+     \end{spread_item}     
+     \item Special {\bf gui} (graphical user interface) or {\bf ide} (integrated 
+     development environment)\\[0.5em]
+     \begin{spread_item}
+       \item rstudio is an example
+     \end{spread_item}
+   \end{spread_item}  
+
+\end{frame}
+
+%%
+%% 
+\section{Command Line}
+
+%%
+%% 
+\begin{frame}
+\frametitle{Command line}
+\framesubtitle{How do I get to the command line?}
+   \begin{spread_item}
+     \item Windows: {\bf command prompt}
+     \item Mac \& Linux: {\bf terminal}
+     \item rstudio\\[0.5em]
+     \begin{spread_item}
+       \item Has command line in lower left by default
+     \end{spread_item}
+     \item Why am I doing this to you???\\[0.5em]
+     \begin{spread_item}
+       \item Useful skill for advanced computing
+       \item Translates to python, perl, c, etc \ldots
+     \end{spread_item}     
+   \end{spread_item}  
+    
+\end{frame}
+
+%%
+%% 
+\subsection{Windows}
+
+%%
+%% 
+\begin{frame}
+\frametitle{Windows}
+\framesubtitle{Command prompt}
+
+  \begin{spread_item}
+    \item Find under Accessories or {\bf type cmd} in search box
+    \item Type {\bf R}
+  \end{spread_item}
+
+  \vskip2em
+  \begin{center}
+  {\color{grn} \huge Figures}
+  \end{center}
+
+% add your images of (1) >finding< Windows command prompt and (2) an image of 
+% the command prompt -- insert as follows
+
+%  \pgfdeclareimage[]{win7menu}{images/Win_menu.png}
+%  \pgfdeclareimage[]{win7prompt}{images/Win_cmdprompt.png}
+%  \begin{center}
+%  \scalebox{1.0}{
+%  \begin{tikzpicture}
+%    \pgftext[at=\pgfpoint{0}{0cm},left,base]{\scalebox{0.35}{\pgfuseimage{win7menu}}}
+%    \pgftext[at=\pgfpoint{5cm}{1cm},left,base]{\scalebox{0.25}{\pgfuseimage{win7prompt}}}
+%  \end{tikzpicture}
+%  }% end scalebox
+%  \end{center}
+    
+\end{frame}
+
+%%
+%% 
+\subsection{Mac}
+
+%%
+%% 
+\begin{frame}
+\frametitle{Mac OS X}
+\framesubtitle{terminal}
+
+  \begin{spread_item}
+    \item Find under Application -> Utilities
+    \item Type {\bf R}
+  \end{spread_item}
+
+  \vskip2em
+  \begin{center}
+  {\color{grn} \huge Figures}
+  \end{center}
+
+% add your images of (1) >finding< Mac terminal and (2) an image of 
+% the terminal -- insert as follows
+
+%  \pgfdeclareimage[]{macmenu}{images/mac_menu.png}
+%  \pgfdeclareimage[]{macterminal}{images/mac_terminal.png}
+%  \begin{center}
+%  \scalebox{1.0}{
+%  \begin{tikzpicture}
+%    \pgftext[at=\pgfpoint{0}{0cm},left,base]{\scalebox{0.18}{\pgfuseimage{macmenu}}}
+%    \pgftext[at=\pgfpoint{6cm}{0.25cm},left,base]{\scalebox{0.25}{\pgfuseimage{macterminal}}}
+%  \end{tikzpicture}
+%  }% end scalebox
+%  \end{center}
+    
+\end{frame}
+
+%%
+%% 
+\subsection{rstudio}
+
+%%
+%% 
+\begin{frame}
+\frametitle{rstudio}
+\framesubtitle{terminal is here too \ldots}
+
+  \begin{spread_item}
+    \item Command line at lower left
+    \item R is already running
+  \end{spread_item}
+
+  \vskip2em
+  \begin{center}
+  {\color{grn} \huge Figures}
+  \end{center}
+
+% add your images of rstudio interface -- insert as follows
+
+%  \pgfdeclareimage[]{rstudio}{images/rstudio_windows.png}
+%  \begin{center}
+%  \scalebox{1.0}{
+%  \begin{tikzpicture}
+%    \pgftext[at=\pgfpoint{0}{0cm},left,base]{\scalebox{0.18}{\pgfuseimage{rstudio}}}
+%  \end{tikzpicture}
+%  }% end scalebox
+%  \end{center}
+    
+\end{frame}
+
+%%
+%% 
+\section{Starting examples}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Command line}
+\framesubtitle{For quick calculations, learning \ldots}
+   \begin{spread_item}
+     \item Calculate $\ln(10)$, (natural log)\\[0.5em]
+<<>>=
+log(10)
+@
+     \item Calculate $\log_{10}(10)$ (base $10$)\\[0.5em]
+<<>>=
+log(10,base=10)
+@
+
+     \item Calculate $10^{2}$ and $\log_{10}(10^{2})$
+<<>>=
+10^2; log(10^2,base=10)
+@     
+   \end{spread_item}  
+    
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Command line}
+\framesubtitle{Getting help}
+   \begin{spread_item}
+     \item Help inline (press {\bf q} to quit)\\[0.5em]
+<<eval=FALSE>>=
+help()
+@
+     \item Help in web browser\\[0.5em]
+<<eval=FALSE>>=
+help.start()
+@
+     \item Specific function\\[0.5em]
+<<eval=FALSE>>=
+help(log)
+@
+
+or 
+
+<<eval=FALSE>>=
+?log
+@
+     \item Search for help\\[0.5em]
+<<eval=FALSE>>=
+??log
+@
+   \end{spread_item}  
+    
+\end{frame}
+
+%%
+%%
+\section{Basics of R}
+
+%%
+%% 
+\begin{frame}
+\frametitle{Basics in R}
+\framesubtitle{The building blocks of R programs}
+
+   \begin{spread_item}
+   \item Today
+   \begin{itemize}
+     \item Variables and assignment
+     \item Vectors
+     \item Matrices
+     \item Plots
+     \item Workspace
+     \item Intro to scripts, {\bf source} command
+   \end{itemize}  
+   \item Thursday
+   \begin{itemize}
+     \item {\bf for} loops
+     \item If else
+     \item Program flow
+     \item Functions
+     \item More scripts
+   \end{itemize}     
+   
+   \end{spread_item}   
+\end{frame}
+
+%%
+%%
+\subsection{Variables}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Variables and assignment}
+\framesubtitle{Saving calculations}
+   \begin{spread_item}
+     \item Simple expression\\[0.5em]
+<<>>=
+1 + 1/12
+@
+     \item Save as variable \verb@x@ \\[0.5em]
+<<>>=
+x <- 1 + 1/12
+@
+     \item To see value of \verb@x@, type\\[0.5em]
+<<>>=
+x
+@
+or, assign using
+<<>>=
+(x <- 1 + 1/12)
+@
+   \end{spread_item}  
+    
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Variables and assignment}
+\framesubtitle{Right side then, left side}
+   \begin{spread_item}
+     \item Right side evaluated, then assigned to left\\[0.5em]
+<<>>=
+(n <- 10)
+(n <- n + 1)
+@
+     \item Confusing? This is {\bf common} in programming
+     \item Another way to do the same thing
+<<>>=
+n <- 10; n <- n + 1
+n
+@
+     
+   \end{spread_item}  
+\end{frame}
+
+%%
+%%
+\subsection{Vectors}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Vectors}
+\framesubtitle{Collection of items of same mode (data type)}
+   \begin{spread_item}
+     \item A collection of numbers\\[0.5em]
+<<>>=
+x <- c(5,67,9,7); x
+y <- c(1,2,x,100); y
+@
+     \item Other examples\\[0.5em]
+<<>>=
+xletter <- c('b','e','j','h'); xletter
+xlogical <- c(TRUE,FALSE,TRUE); xlogical
+@
+
+   \end{spread_item}  
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Vectors}
+\framesubtitle{Accessing specific elements of a vector}
+   \begin{spread_item}
+     \item Get one (or more) elements of vector\\[0.5em]
+<<>>=
+x <- c(5,67,9,7)
+x[1]
+x[c(1,3)]
+@
+     \item Get all elements {\bf excluding} specified\\[0.5em]
+<<>>=
+x[-1]
+x[-c(1,3)]
+@
+
+   \end{spread_item}  
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Vectors}
+\framesubtitle{Finding elements with given properties}
+   \begin{spread_item}
+     \item Are elements greater than \verb@5@?\\[0.5em]
+<<>>=
+x <- c(5,67,9,7)
+x > 5
+@
+     \item Get the {\bf indices} of these elements\\[0.5em]
+<<>>=
+z <- which(x>5); z
+@
+     \item Select these elements using {\bf which}\\[0.5em]
+<<>>=
+(z <- x[which(x>5)])
+@
+   \end{spread_item}  
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Vectors}
+\framesubtitle{Changing vectors}
+   \begin{spread_item}
+     \item Change element \verb@3@ to a \verb@47@\\[0.5em]
+<<>>=
+x <- c(5,67,9,7)
+x[3] <- 47; x
+@
+     \item Add an extra element\\[0.5em]
+<<>>=
+x[5] <- 99; x
+@
+     \item Change multiple elements at once\\[0.5em]
+<<>>=
+x[c(1,2)] <- c(446,51); x
+@
+   \end{spread_item}  
+\end{frame}
+
+%%
+%%
+\subsubsection{seq,rep}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Using the colon operator}
+\framesubtitle{}
+   \begin{spread_item}
+     \item Create a vector with all integers from \verb@2@ to \verb@9@ \\[0.5em]
+<<>>=
+x <- 2:9; x
+@
+     \item Create a vector with all integers from \verb@3@ to \verb@-1@ \\[0.5em]
+<<>>=
+y <- 3:-1; y
+@
+     \item Create a vector with all integers from \verb@-1@ to \verb@-3@ \\[0.5em]
+<<>>=
+z <- -(1:3); z
+@
+   \end{spread_item}  
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Using seq}
+\framesubtitle{}
+   \begin{spread_item}
+     \item General form: \verb@seq(from,to,by,length)@\\[0.5em]
+     \item Using by\\[0.5em]
+<<>>=
+x <- seq(from=1,to=100,by=10); x
+@
+     \item Using length\\[0.5em]
+<<>>=
+y <- seq(from=0,to=100,length=5); y
+@
+     \item Reverse order\\[0.5em]
+<<>>=
+z <- seq(from=3,to=0,by=-1.5); z
+@
+
+   \end{spread_item}  
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Using rep}
+\framesubtitle{}
+   \begin{spread_item}
+     \item Typical use\\[0.5em]
+<<>>=
+x <- rep(52,3); x
+@
+     \item Repeat pattern\\[0.5em]
+<<>>=
+y <- rep(52:54,2); y
+@
+     \item Repeat each element\\[0.5em]
+<<>>=
+z <- rep(52:54,each=2); z
+@
+   \end{spread_item}  
+\end{frame}
+
+%%
+%%
+\subsubsection{Info about vectors}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Information about vectors}
+\framesubtitle{}
+   \begin{spread_item}
+     \item What can we find out about a vector?\\[0.5em]
+<<>>=
+(x <- seq(from=20,to=1,length=5))
+length(x);
+min(x); max(x)
+mean(x);sum(x)
+sort(x)
+@
+   \end{spread_item}  
+\end{frame}
+
+%%
+%%
+\subsubsection{Vectorized operations}
+
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Vectorized opertations}
+\framesubtitle{}
+   \begin{spread_item}
+     \item Modify all elements of vector\\[0.5em]
+<<>>=
+(x<-1:5)
+x^2
+log(x)
+@
+     \item Can also add, multiply vectors (careful of `wrapping')
+<<>>=
+(y<-11:15)
+x+y; x*y
+@
+
+   \end{spread_item}  
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Vectorized opertations}
+\framesubtitle{Wrapping}
+   \begin{spread_item}
+     \item Careful with vectors of different size\\[0.5em]
+<<>>=
+(x<-1:5); (y<-3:5)
+x+y; x*y
+@
+     \item Vectorized operations are faster
+     \item They are also potentially confusing and might give unexpected results
+     -- careful!
+   \end{spread_item}  
+\end{frame}
+
+%%
+%%
+\subsection{Matrices}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Matrices}
+\framesubtitle{Multidimensional collection of items of same mode (data type)}
+   \begin{spread_item}
+     \item Make the following matrix, $M$:\\[0.5em]
+     \[
+     M = \begin{bmatrix}
+       1 & 3 \\[0.3em]
+       2 & 4 
+     \end{bmatrix}
+    \]
+<<>>=
+(M <- matrix(c(1,2,3,4),nrow=2))
+@
+   \end{spread_item}  
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Matrices}
+\framesubtitle{}
+   \begin{spread_item}
+     \item Make the following matrix, $M$ (note position of elements has changed):\\[0.5em]
+     \[
+     M = \begin{bmatrix}
+       1 & 2 \\[0.3em]
+       3 & 4 
+     \end{bmatrix}
+    \]
+<<>>=
+(M <- matrix(1:4,nrow=2,byrow=TRUE))
+@
+   \end{spread_item}  
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Matrices}
+\framesubtitle{Accessing elements}
+   \begin{spread_item}
+     \item Can access individual enteries, columns or rows\\[0.5em]
+<<>>=
+(A <- matrix(1:8,nrow=2,byrow=TRUE))
+A[1,2]  # get row 1, column 2
+A[1,]   # get first row
+A[,3]   # get third column
+@
+   \end{spread_item}  
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Matrices}
+\framesubtitle{Subsets of matrix enteries}
+   \begin{spread_item}
+     \item What elements are greater than \verb@5@?\\[0.5em]
+<<>>=
+(A <- matrix(1:8,nrow=2,byrow=TRUE))
+which(A>5) # indicies of elements greater than 5
+A[A>5]     # values of those elements
+@
+   \end{spread_item}  
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Matrices}
+\framesubtitle{Vectorized operations}
+   \begin{spread_item}
+     \item Take the \verb@log@ of all elements\\[0.5em]
+<<>>=
+(A <- matrix(11:5,nrow=2,byrow=TRUE))
+log(A)
+@
+     \item Why did I get two \verb@11@'s in matrix \verb@A@?  Why is the order 
+     backwards?
+   \end{spread_item}  
+\end{frame}
+
+%%
+%%
+\subsection{Plots}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Plots}
+
+   \begin{spread_item}
+     \item Plots are an important part of science and modeling
+     \item There are {\bf many} ways to plot in R
+     \item I provide a series of (basic) examples\\[0.5em]
+     \begin{spread_item}
+       \item You should play with plotting
+       \item Try plotting many ways to best convey information
+     \end{spread_item}
+     \item Look online for examples of what is possible\\[0.5em]
+   \end{spread_item}  
+
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Plots}
+\framesubtitle{Example 1}
+   \begin{spread_item}
+     \item Plot $x$ vs $x^{2}$:\\[0.5em]
+<<label=plot1,echo=TRUE,fig=TRUE,include=FALSE>>=
+x <- seq(from=0,to=10,by=1); y <- x^2
+plot(x,y,xlab="x",ylab="x squared")
+@
+   \end{spread_item}  
+%%
+\begin{center}
+ \includegraphics[width=2in,height=2in]{Lecture01-plot1}
+\end{center}
+
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Plots}
+\framesubtitle{Example 2}
+   \begin{spread_item}
+     \item Plot with points (default), $x^{2}$ and $x^{3}$\\[0.5em]
+<<label=plot2,echo=TRUE,fig=TRUE,include=FALSE>>=
+x <- seq(from=0,to=10,by=1); y <- x^2; z <- x^3
+plot(x,y,xlab="x",ylab="x^2,x^3",col="red")
+points(x,z,col="blue")
+@
+   \end{spread_item}  
+%%
+\begin{center}
+ \includegraphics[width=2in,height=2in]{Lecture01-plot2}
+\end{center}
+
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Plots}
+\framesubtitle{Example 3}
+   \begin{spread_item}
+     \item Plot with lines and modify plotting range\\[0.5em]
+<<label=plot3,echo=TRUE,fig=TRUE,include=FALSE>>=
+x <- seq(from=-10,to=10,by=1); y <- x^2; z <- x^3
+plot(0, type="n", xlab="x",ylab="x^2,x^3",
+     xlim=c(-10,10),ylim=c(-100,100))
+lines(x,y,lty=1,col="red") 
+lines(x,z,lty=2,col="blue")
+@
+   \end{spread_item}  
+%%
+\begin{center}
+ \includegraphics[width=1.75in,height=1.75in]{Lecture01-plot3}
+\end{center}
+
+\end{frame}
+
+%%
+%%
+\section{Workspace}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Workspace}
+\framesubtitle{R has a memory}
+   \begin{spread_item}
+     \item R remembers assignments that have been made in a session
+     \item R can also remember {\bf between} sessions\\[0.5em]
+       \begin{spread_item}
+         \item Is this good or bad?
+         \item Depends on what you want to do \ldots
+       \end{spread_item}
+     \item Example:\\[0.5em]
+% clear R workspace     
+<<echo=FALSE>>=
+rm(list=ls())
+@
+
+% do example
+<<>>=
+x <- 5;  y <- c(4,98)
+ls()
+@
+   \end{spread_item}  
+
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Workspace}
+\framesubtitle{How do we clear/delete?}
+   \begin{spread_item}
+     \item Often it is a good idea to clean R's memory
+     \item Delete single item
+% clear R workspace     
+<<echo=FALSE>>=
+rm(list=ls())
+@
+
+% do example
+<<>>=
+x <- 5;  y <- c(4,98)
+rm(x); ls()
+@
+     \item Clear entire workspace
+% clear R workspace     
+<<echo=FALSE>>=
+rm(list=ls())
+@
+
+% do example
+<<>>=
+x <- 5;  y <- c(4,98)
+rm(list=ls()); ls()
+@
+
+   \end{spread_item}  
+
+\end{frame}
+
+%%
+%%
+\section{Scripts}
+
+%%
+%% 
+\begin{frame}
+\frametitle{Scripts}
+\framesubtitle{Motivation}
+   \begin{spread_item}
+     \item An R script is a text file with a series of commands
+     \item Why use scripts?\\[0.5em]
+     \begin{spread_item}
+       \item Makes R coding reusable (by you and others)
+       \item Easy to make {\bf lots} of comments
+       \item Remember how code works (you will forget)
+       \item Easier to manage big projects
+       \item Use hoffman2
+     \end{spread_item}
+     \item We will be using scripts all the time!
+   \end{spread_item}  
+
+\end{frame}
+
+%%
+%% 
+\begin{frame}
+\frametitle{Scripts}
+\framesubtitle{Example - Geometric Model}
+   \begin{spread_item}
+     \item Our first discrete time model was the geometric model:\\[0.5em]
+     \[
+       n_{t+1} = R n_{t}
+     \]
+     \item We can solve this by hand\\[0.5em]
+     \[
+       n_{t} = R^{t} n_{0}
+     \]
+     \item Let's generate data for $n_{t}$ and plot it!
+   \end{spread_item}  
+
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Scripts}
+\framesubtitle{How to create and run}
+
+  \begin{spread_item}
+    \item Creation
+    \begin{spread_item}
+      \item Create in plain text editor (notepad, TextEdit, etc)
+      \item Do {\bf not} use Word or similar programs -- hidden formatting!
+      \item Can use editor in {\bf rstudio}
+    \end{spread_item}
+    \item Running
+    \begin{spread_item}
+      \item Use {\bf source} command: \verb@source(scriptname)@
+      \item Command line or terminal
+      \item rstudio
+    \end{spread_item}    
+  \end{spread_item}
+
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Geometric Model}
+
+{\tiny
+\begin{verbatim}
+# 2012, Jan 24th  ---- Chris Strelioff
+#   * Plot the geometric model 
+#     n(t+1) = R * n(t)   , for t=0 to t=10   
+#   * Parameters:
+#     R = 1.2   "Reproductive number"
+#   * Initial condition:
+#     n(t=0) = 10 
+## clear workspace
+cat('\n','* Clearing Workspace','\n'); rm(list=ls())
+
+## set my working directory and save location -- change 'path-to-your-directory'
+setwd('path-to-your-directory'); mydir <- getwd()
+cat('\n','* Working directory set to: ', mydir, '\n')
+
+# make vector of times
+cat('\n','* Generate vetor of times', '\n')
+show(time <- 0:10)
+
+# set parameters and IC
+R <- 1.2;n0 <- 10
+cat('\n', '* Setting parameters and IC', '\n  R=', R, '\n  n[0]=', n0, '\n')
+
+# use vectorized operation to evaluate n(t) at these times
+#  - employ solution n(t) = R^(t) * n(0)
+cat('\n','* Generate values for n(t)', '\n'); show(nn <- (R^time)*(n0))
+
+# generate plot and save as pdf
+cat('\n','* Plotting', '\n')
+pdf('GeometricModel.pdf')  # set ouput filename -- this startouput to file
+plot(time,nn, xlab="time t", ylab="N(t)", col="red")
+dev.off() # this stops output to file
+\end{verbatim}  
+}% end 
+
+\end{frame}
+
+%%
+%%
+%%
+\end{document}
