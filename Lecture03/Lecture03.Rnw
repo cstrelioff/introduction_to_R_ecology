@@ -1,0 +1,553 @@
+%%
+%%  PRODUCE SLIDES
+\documentclass[c]{beamer}
+
+%% 
+%% PRODUCE HANDOUTS
+%\documentclass[c,handout]{beamer} %- handout version of talk
+%\usepackage{pgfpages}
+%\pgfpagesuselayout{4 on 1}[letterpaper, landscape , border shrink=5mm]
+%\pgfpagesuselayout{2 on 1}[letterpaper, border shrink=5mm]
+
+%%
+%% PACKAGES
+\usepackage[latin1]{inputenc}
+\usefonttheme{professionalfonts}
+\usepackage{times}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{verbatim}
+\usetikzlibrary{arrows,shapes}
+
+%%
+%% DOCUMENT INFORMATION
+\title{Introduction to R\\EEB C119/C219}
+\author{Christopher C. Strelioff}
+\date{Jan 2012}
+
+%%
+%% COLORS
+\definecolor{grn}{rgb}{.0941,.421,.019}
+\definecolor{blu}{rgb}{0.0,.235,.529}
+%% 
+%% ASSIGN COLORS TO FRAME COMPONENTS
+\setbeamercolor{title}{fg=grn!100,bg=white!100}
+\setbeamercolor{footline}{fg=black!100,bg=white!100}
+\setbeamercolor{frametitle}{fg=grn!100,bg=white!100}
+
+%%
+%% FOOTER SETUP
+\setbeamertemplate{footline}
+{\leavevmode
+\begin{beamercolorbox}[width=.9\paperwidth]{section in head/foot}
+\vskip2pt
+\tiny\quad Introduction to R -- EEB C119/C219
+\hfill
+\tiny\quad Slide \hskip1pt \insertframenumber \hskip2pt of \inserttotalframenumber~~
+\vskip0.5em
+\end{beamercolorbox}
+}% END setbeamertemplate footline
+
+%% 
+%% NO NAVIGATION SYMBOLS
+\setbeamertemplate{navigation symbols}{}
+
+%%
+%% NEW COMMANDS
+\newenvironment{packed_item}{
+\begin{itemize}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}{\end{itemize}}
+\newenvironment{spread_item}{
+\begin{itemize}
+  \setlength{\itemsep}{7.5pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}{\end{itemize}}
+
+%% circles for itemize
+\useinnertheme{circles}
+
+
+\begin{document}
+
+%%
+%% title
+%%
+\section{Title Slide}
+
+%%
+%%
+\begin{frame}
+
+\begin{center}
+
+{\color{grn} \huge Introduction to R\\[0.5em]Lecture 3}
+
+\vskip10pt
+
+EEB C119/C219 (Winter 2012)
+
+\vskip20pt
+
+
+\vskip15pt
+Christopher C.~Strelioff
+
+\end{center}
+
+\end{frame}
+
+%%
+%% Overview
+\section{Overview}
+
+%%
+%% 
+\begin{frame}
+\frametitle{Overview}
+
+   \begin{spread_item}
+   \item Today
+   \begin{itemize}
+     \item Functions
+     \begin{itemize}
+       \item Introduction
+       \item Default arguments
+       \item Function {\bf return}
+       \item Variable scope
+     \end{itemize}
+     \item Discrete logistic function
+     \item How do you use functions? Some live demos.
+   \end{itemize} 
+   \item Previous lectures
+   \begin{itemize}
+     \item Variables and assignment
+     \item Vectore, Matrices
+     \item Plots
+     \item Workspace
+     \item Intro to scripts, {\bf source} command
+     \item {\bf for} loops, If else
+     \item Program flow \& pseudocode
+   \end{itemize}  
+   \end{spread_item}   
+\end{frame}
+
+%%
+%% Overview
+\section{Functions}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Function basics}
+\framesubtitle{Why use functions?}
+
+   \begin{spread_item}
+   \item Functions allow for the effective reuse of code
+   \item Functions are the basic building block for building large simulations
+   \item We have already seen useful (built-in) functions, ex:\\[0.5em]
+<<>>==
+x <- 1:10
+(sumOfx <- sum(x))
+@   
+   \begin{itemize}
+     \item \verb@sum@ is a function, the vector \verb@x@ is the argument we pass 
+     to the function
+   \end{itemize}
+   \item We can define our own functions
+   \end{spread_item}   
+\end{frame}
+
+%%
+%%
+\subsection{Introduction}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Functions}
+\framesubtitle{Defining a function}
+
+  \begin{spread_item}
+    \item Elements of a function definition:\\[0.5em]
+    \begin{spread_item}
+      \item Give the function a name (be careful not to use reserved words like 
+      \verb@if@, \verb@for@, etc.)
+      \item Decide what arguments will be passed to function (\verb@r@, \verb@K@, etc.)
+      \item Decide what calculations (expressions) will be done by the 
+            function? \\[0.5em]
+      \begin{itemize}
+        \item Ex: Calculate a vector of \verb@n@ values
+      \end{itemize}
+      \item Decide what to return from the function\\[0.5em] 
+      \begin{itemize}
+        \item Return the \verb@n@ vector? Or, just plot the results?
+      \end{itemize}
+    \end{spread_item}
+  \end{spread_item}
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Functions}
+\framesubtitle{Defining a function}
+
+  \begin{spread_item}
+    \item Example format:\\[0.5em]
+\begin{verbatim}
+functionName <- function(arg1, arg2, ... )  {
+  expression 1 ...
+  expression 2 ...
+  
+  return(value)
+}
+\end{verbatim}
+    \item The explicit \verb@return@ expression is optional
+    \item By default, result of last expression in function is returned
+    \item I suggest always being explicit about return value
+  \end{spread_item}
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Functions}
+\framesubtitle{Example - divide numbers}
+
+{\scriptsize
+<<>>=
+divideNumbers <- function(x,y)  {
+  # divide x by y 
+  result <- x/y
+  
+  # return result
+  return(result)
+}
+
+# After definition, use function
+divideNumbers(1,5)
+
+# or
+divideNumbers(5,1)
+@
+}% end scriptsize
+
+\begin{itemize}
+  \item Note -- order of arguments is important!
+\end{itemize}
+
+\end{frame}
+
+%%
+%%
+\subsection{Default values}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Functions}
+\framesubtitle{Example - default values for arguments}
+
+{\scriptsize
+<<>>=
+divideNumbers <- function(x=1,y=4)  {
+  # divide x by y 
+  result <- x/y
+  
+  # return result
+  return(result)
+}
+
+# No arguments, assume defaults
+divideNumbers()
+# Use as before
+divideNumbers(1,10)
+# Change ordering
+divideNumbers(y=10,x=1)
+@
+}% end scriptsize
+
+\end{frame}
+
+%%
+%%
+\subsection{return}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Functions}
+\framesubtitle{Variations on {\bf return}}
+
+  \begin{spread_item}
+    \item A function can have more than one return\\[0.5em]
+    \begin{spread_item}
+      \item Useful to control program flow inside function
+    \end{spread_item}
+    \item A function can return more than one variable, vector, etc.\\[0.5em]
+    \begin{spread_item}
+      \item Use one function to calculate and return a bunch of things
+    \end{spread_item}
+    \item Let's do some examples \ldots
+  \end{spread_item}
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Functions}
+\framesubtitle{Example - default values, plus multiple {\bf returns}}
+
+{\scriptsize
+<<>>=
+myOperations <- function(x=1,y=4,op="+")  {
+  # select the appropriate action
+  if (op == "+") {
+    return(x+y)
+  } else if (op == "-") {
+    return(x-y)
+  } else if (op == "*") {
+    return(x*y)
+  } else {
+    cat("\nUnrecognized operation!\n")
+  }
+  
+}#end function
+
+myOperations()
+myOperations(x=5,op="*")
+myOperations(x=5,op="/")
+@
+}% end scriptsize
+
+\end{frame}
+
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Functions}
+\framesubtitle{Example - {\bf return} more than one result}
+
+{\scriptsize
+<<>>=
+allOperations <- function(x,y)  {
+  # do all operations, return 'named' vector  
+  result <- c("add"=x+y,
+              "subtract"=x-y,
+              "multiply"=x*y)
+              
+  return(result)
+    
+}#end function
+temp <- allOperations(1,5); temp
+names(temp)
+allOperations(5,1)
+@
+}% end scriptsize
+
+\end{frame}
+
+
+%%
+%%
+\subsection{Variable scope}
+
+%%
+%% 
+\begin{frame}
+\frametitle{Functions}
+\framesubtitle{Variable {\bf scope}}
+
+\begin{spread_item}
+  \item Variables used inside function have their own workspace (memory)\\[0.5em]
+  \begin{itemize}
+    \item Variables assigned inside function {\bf can't} be seen outside function
+    \item However, variables assigned outside functions {\bf can} be seen 
+    inside ({\bf global} variables)
+    \item If both local (inside function) and global (outside function) 
+    variables with same name, local `wins' inside function
+  \end{itemize}
+  \item This behavior can result in some very confusing behavior and errors 
+  -- careful!
+\end{spread_item}
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Functions}
+\framesubtitle{Example - variable scope}
+
+{\scriptsize
+%clear workspace for this slide
+<<echo=FALSE,eval=TRUE>>=
+rm(list=ls())
+@
+% show code but don't run
+<<echo=TRUE,eval=TRUE>>=
+test <- function(x) {
+  # add one to x
+  y <- x+1 
+  return(y)
+}
+test(1)
+@
+% Run code carefully to show error
+<<echo=TRUE,eval=FALSE>>=
+x
+@
+<<echo=FALSE,eval=TRUE,result=verbatim>>=
+try_out <- try(x)
+cat(try_out)
+@
+<<echo=TRUE,eval=FALSE>>=
+y
+@
+<<echo=FALSE,eval=TRUE,result=verbatim>>=
+try_out <- try(y)
+cat(try_out)
+@
+<<>>=
+y <- 10
+test(1);y
+@
+}%end scriptsize
+
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Functions}
+\framesubtitle{Another example - variable scope}
+
+{\scriptsize
+%clear workspace for this slide
+<<echo=FALSE,eval=TRUE>>=
+rm(list=ls())
+@
+% show code but don't run
+<<echo=TRUE,eval=TRUE>>=
+test2 <- function(x) {
+  # add z to x, notice that z in not assigned
+  y <- x+z 
+  return(y)
+}
+@
+% Run code carefully to show error
+<<echo=TRUE,eval=FALSE>>=
+test2(1)
+@
+<<echo=FALSE,eval=TRUE,result=verbatim>>=
+try_out <- try(test2(1))
+cat(try_out)
+@
+  \begin{spread_item}
+    \item Assign z as a global variable (this means outside of function)
+  \end{spread_item}
+<<>>=
+z <- 10  
+test2(1)  # now, test2() works!
+@
+}%end scriptsize
+
+\end{frame}
+
+%%
+%%
+\section{Demo 1}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Demo 1}
+\framesubtitle{Repeat contents of last two slides in {\bf rstudio}}
+
+  \begin{spread_item}
+    \item Ordering of commands in previous examples is important
+    \item Also, show how to access functions you've written\\[0.5em]
+    \begin{itemize}
+      \item This is a `hands-on', interactive way to use a function
+    \end{itemize}
+    \item Basic description of this method:\\[0.5em]
+    \begin{itemize}
+      \item Write functions in text file, just like a script
+      \item {\bf source} the script -- this executes the definitions
+      \item Look at the workspace
+      \item Try the examples from the command line, in the order presented
+    \end{itemize}    
+    \item {\bf script:} \verb@Lecture03_Ex01.R@
+  \end{spread_item}
+\end{frame}
+
+%%
+%%
+\section{Logistic model}
+
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Logistic model}
+\framesubtitle{A general function}
+
+{\scriptsize
+<<>>=
+logisticModel <- function(n0, rd, K, timesteps)  {
+  # iterate model for desired number of timesteps
+  N <- rep(0,timesteps+1) # preallocate vector N (faster)
+  N[1] <- n0              # initialize first time point
+  
+  # use for loop to iterate
+  for (t in 1:timesteps) {
+    N[t+1] <- N[t]*(1 + rd*(1 - N[t]/K))
+  }
+
+  # return vector
+  return(N)
+}
+
+# After definition, use function
+(data <- logisticModel(10,1.2,500,5))
+(data2 <- logisticModel(10,2.83,500,5))
+@
+}% end scriptsize
+
+\end{frame}
+
+%%
+%%
+\section{Demo 2}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Demo 2}
+\framesubtitle{Using the logisticModel function}
+
+\begin{spread_item}
+  \item Ex1 - Write function in text file and {\bf source}, as before\\[0.5em]
+    \begin{itemize}
+      \item {\bf script:} \verb@Lecture03_Ex02.R@
+    \end{itemize}
+  \item Ex2 - Use function in {\bf second} script\\[0.5em]
+  \begin{itemize}
+    \item Use second script to call function many times
+    \item Plot dynamics for many \verb@n0@, while holding other parameters fixed
+    \item  {\bf scripts:} \verb@Lecture03_Ex02.R@ and \verb@Lecture03_Ex02a.R@
+  \end{itemize}
+\end{spread_item}
+
+
+\end{frame}
+
+
+%%
+%%
+%%
+\end{document}
