@@ -2,7 +2,8 @@
 *.log
 *.nav
 *.out
-*.snw
+*.snm
 *.tex
 *.toc
 *.vrb
+*.pdf
