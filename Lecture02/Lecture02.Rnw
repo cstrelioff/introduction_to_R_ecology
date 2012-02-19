@@ -1,0 +1,538 @@
+%%
+%%  PRODUCE SLIDES
+\documentclass[c]{beamer}
+
+%% 
+%% PRODUCE HANDOUTS
+%\documentclass[c,handout]{beamer} %- handout version of talk
+%\usepackage{pgfpages}
+%\pgfpagesuselayout{4 on 1}[letterpaper, landscape , border shrink=5mm]
+%\pgfpagesuselayout{2 on 1}[letterpaper, border shrink=5mm]
+
+%%
+%% PACKAGES
+\usepackage[latin1]{inputenc}
+\usefonttheme{professionalfonts}
+\usepackage{times}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{verbatim}
+\usetikzlibrary{arrows,shapes}
+
+%%
+%% DOCUMENT INFORMATION
+\title{Introduction to R\\EEB C119/C219}
+\author{Christopher C. Strelioff}
+\date{Jan 2012}
+
+%%
+%% COLORS
+\definecolor{grn}{rgb}{.0941,.421,.019}
+\definecolor{blu}{rgb}{0.0,.235,.529}
+%% 
+%% ASSIGN COLORS TO FRAME COMPONENTS
+\setbeamercolor{title}{fg=grn!100,bg=white!100}
+\setbeamercolor{footline}{fg=black!100,bg=white!100}
+\setbeamercolor{frametitle}{fg=grn!100,bg=white!100}
+
+%%
+%% FOOTER SETUP
+\setbeamertemplate{footline}
+{\leavevmode
+\begin{beamercolorbox}[width=.9\paperwidth]{section in head/foot}
+\vskip2pt
+\tiny\quad Introduction to R -- EEB C119/C219
+\hfill
+\tiny\quad Slide \hskip1pt \insertframenumber \hskip2pt of \inserttotalframenumber~~
+\vskip0.5em
+\end{beamercolorbox}
+}% END setbeamertemplate footline
+
+%% 
+%% NO NAVIGATION SYMBOLS
+\setbeamertemplate{navigation symbols}{}
+
+%%
+%% NEW COMMANDS
+\newenvironment{packed_item}{
+\begin{itemize}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}{\end{itemize}}
+\newenvironment{spread_item}{
+\begin{itemize}
+  \setlength{\itemsep}{7.5pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}{\end{itemize}}
+
+%% circles for itemize
+\useinnertheme{circles}
+
+
+\begin{document}
+
+%%
+%% title
+%%
+\section{Title Slide}
+
+%%
+%%
+\begin{frame}
+
+\begin{center}
+
+{\color{grn} \huge Introduction to R\\[0.5em]Lecture 2}
+
+\vskip10pt
+
+EEB C119/C219 (Winter 2012)
+
+\vskip20pt
+
+
+\vskip15pt
+Christopher C.~Strelioff
+
+\end{center}
+
+\end{frame}
+
+%%
+%% Overview
+\section{Overview}
+
+%%
+%% 
+\begin{frame}
+\frametitle{Where are we going?}
+
+   \begin{spread_item}
+   \item Today
+   \begin{itemize}
+     \item {\bf for} loops
+     \item If else
+     \item Program flow
+     \item More scripts - discrete time logistic
+     \item Functions (next lecture)
+   \end{itemize} 
+   \item Last time
+   \begin{itemize}
+     \item Variables and assignment
+     \item Vectors
+     \item Matrices
+     \item Plots
+     \item Workspace
+     \item Intro to scripts, {\bf source} command
+   \end{itemize}  
+   \end{spread_item}   
+\end{frame}
+
+%%
+%% Overview
+\section{Programming basics}
+
+%%
+%% 
+\begin{frame}
+\frametitle{Programming basics}
+\framesubtitle{{\bf for} loop}
+
+   \begin{spread_item}
+   \item {\bf for} loops are a basic building block of all programming languages     
+   \item Allows for simple execution of repetitive calculations
+   \item In R, can (sometimes) use vectorized statements instead
+   \item (I think) a {\bf for} loop can be easier to understand
+   \item I will avoid {\bf while} loops -- watch out for $\infty$-loops!
+   \end{spread_item}   
+\end{frame}
+
+%%
+%%
+\subsection{for loop}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{{\bf for} loop}
+\framesubtitle{A first example}
+
+  \begin{spread_item}
+    \item for loop strucure\\[0.5em]
+<<>>==
+for (i in 1:4) {
+  cat("This time i is:", i , "\n")
+}
+@
+    \item \verb@i@ is set to each element in vector \verb@1:4@ in turn
+    \item Notice brackets: \verb@(@ and \verb@)@, also \verb@{@ and \verb@}@
+  \end{spread_item}
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{{\bf for} loop}
+\framesubtitle{A silly, but different example}
+
+  \begin{spread_item}
+    \item This is very general\\[0.5em]
+<<>>==
+letters <- c("H","e","l","l","o","!")
+for (letter in letters) {
+  cat(letter)
+}
+@
+  \end{spread_item}
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{{\bf for} loop}
+\framesubtitle{Geometric model}
+
+  \begin{spread_item}
+    \item Last class we used a vectorized equation to evaluate the geometric 
+    model: $n_{t+1}=R n_{t}$\\[0.5em]
+<<>>==
+R <- 1.2;            # set R
+n0 <- 10             # set IC
+time <- 1:5          # I will do t=1 to t=5
+(nn <- (R^time)*n0)  # vectorized version
+@
+    \item How do we do this with a for loop?
+  \end{spread_item}
+\end{frame}
+
+%%
+%% 
+\begin{frame}
+\frametitle{{\bf for} loop}
+\framesubtitle{Geometric model -- think about the process}
+
+  \begin{spread_item}
+    \item Start with $n_{0}$ and iterate $n_{t+1}=R n_{t}$\\[0.5em]
+    \begin{eqnarray*}
+      n_{1} & = & R n_{0} \\
+      n_{2} & = & R n_{1} \\
+      n_{3} & = & R n_{2} \\
+            & \ldots &
+    \end{eqnarray*}
+    \item This looks like the output of our example {\bf for} loops.
+  \end{spread_item}
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{{\bf for} loop}
+\framesubtitle{Geometric model with for loop}
+
+  \begin{spread_item}
+    \item Use equation: $n_{t+1}=R n_{t}$\\[0.5em]
+<<>>==
+R <- 1.2             # reproductive num.
+nn <- rep(0,6)       # initialize vector
+nn[1] <- 10          # put IC at index 1
+# loop through t=1:5 to generate n(t)
+for (t in 1:5) {
+  nn[t+1] <- R*nn[t] 
+}
+nn
+@
+    \item Notice, the result is the same as the vectorized version, except 
+    $n_{0}=10$ is included in the vector
+  \end{spread_item}
+\end{frame}
+
+%%
+%% 
+\begin{frame}
+\frametitle{{\bf for} loop}
+\framesubtitle{Varying reproductive number}
+
+  \begin{spread_item}
+    \item What if repropductive number depends on $t$: $R_{t}$?
+    \item Use equation: $n_{t+1}=R_{t} n_{t}$\\[0.5em]
+    \begin{eqnarray*}
+      n_{1} & = & R_{0} n_{0} \\
+      n_{2} & = & R_{1} n_{1} \\
+      n_{3} & = & R_{2} n_{2} \\
+            & \ldots &
+    \end{eqnarray*}
+    \item We can evaluate this with a {\bf for} loop
+  \end{spread_item}
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{{\bf for} loop}
+\framesubtitle{Varying reproductive number}
+
+  \begin{spread_item}
+    \item Use equation: $n_{t+1}=R_{t} n_{t}$\\[0.5em]
+<<>>==
+# vector of reproductive nums
+R <- c(1.0,0.9,1.1,0.75,1.5)             
+nn <- rep(0,6)       # initialize vector
+nn[1] <- 10          # put IC at index 1
+# loop through t=1:5 to generate n(t)
+for (t in 1:5) {
+  nn[t+1] <- R[t]*nn[t] 
+}
+nn
+@
+  \end{spread_item}
+\end{frame}
+
+%%
+%%
+\subsection{if else}
+
+%%
+%% 
+\begin{frame}
+\frametitle{Programming basics}
+\framesubtitle{{\bf if} and {\bf else}}
+
+   \begin{spread_item}
+   \item {\bf if} and {\bf else} let us do conditional execution
+   \item If a specified \emph{condition} is met $\rightarrow$ \emph{execute appropriate code}
+   \item A basic flow control in all programming languages
+   \item Let's learn by example
+   \end{spread_item}   
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{{\bf if} and {\bf else}}
+\framesubtitle{}
+
+   \begin{spread_item}
+   \item A first example\\[0.5em]
+<<>>==
+R <- 1.2
+if (R > 1.0) {
+  cat('This was a good year, R>1 \n')
+} else {
+  cat('This was a bad year, R<1 \n')
+}
+@
+   \end{spread_item}   
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{{\bf if} and {\bf else}}
+\framesubtitle{}
+
+   \begin{spread_item}
+   \item A second example\\[0.5em]
+<<>>==
+R <- 1.0
+if (R > 1.0) {
+  cat('This was a good year, R>1 \n')
+} else if (R == 1.0) {
+  cat('This was an OK year, we survived (R=1). \n')
+} else {
+  cat('This was a bad year, R<1 \n')
+}
+@
+   \end{spread_item}   
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{{\bf if} and {\bf else}}
+\framesubtitle{also a {\bf for} loop}
+
+  \begin{spread_item}
+    \item What years were good from our vector of $R$'s?\\[0.5em]
+<<>>==
+# vector of reproductive nums
+R <- c(1.0,0.9,1.1,0.75,1.5)             
+# loop through vector of R's
+for (Rval in R) {
+  if (Rval < 1.) { cat('* bad yr ') }
+  else if (Rval == 1.0) { cat('* ok yr ') }
+  else{ cat('* good yr ') }
+}
+@
+  \end{spread_item}
+\end{frame}
+
+%%
+%%
+\section{Scripts and pseudocode}
+
+%%
+%% 
+\begin{frame}
+\frametitle{Pseudocode}
+\framesubtitle{Write out the flow of your script}
+
+  \begin{spread_item}
+    \item Pseudocode is a useful tool for organizing programming
+    \item Plan out the things your code needs to do\\[0.5em]
+      \begin{spread_item}
+        \item What variables need to be assigned?
+        \item What operations need to be done to variables, vectors?
+        \item What {\bf order} do these things need to be done?
+      \end{spread_item}
+    \item Use comments to do this before coding
+    \item Writing pseudocode is helpful in the learning stages
+  \end{spread_item}
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Pseudocode}
+\framesubtitle{Example: discrete time logistic model}
+
+{\scriptsize
+\begin{verbatim}
+# clear workspace
+
+# set model parameters
+
+# set number of timesteps
+
+# initialize population vector, set IC
+
+# set the plotflag to TRUE or FALSE
+
+# use a for loop to iterate
+
+# plot the results if PLOTFLAG is TRUE
+
+\end{verbatim}
+}
+
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Script}
+\framesubtitle{discrete time logistic model}
+
+{\scriptsize
+\begin{verbatim}
+## clear workspace
+cat('\n','* Clearing Workspace','\n'); rm(list=ls())
+
+# set model parameters
+rd <- 2.83;K <- 100
+
+# set number of timesteps
+timesteps <- 200
+
+# initialize population vector, set IC
+N <- rep(0,timesteps+1); N[1] <- 10
+
+# set the plotflag to TRUE or FALSE
+PLOTFLAG <- TRUE
+
+# use a for loop to iterate
+for (t in 1:timesteps) N[t+1] <- N[t]*(1 + rd*(1 - N[t]/K))
+
+# plot the results if PLOTFLAG is TRUE
+if (PLOTFLAG) plot(1:(timesteps+1), N, 
+                   xlab="time", ylab="N",type="b", col='blue')
+
+\end{verbatim}
+}
+
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Script output}
+\framesubtitle{discrete time logistic model}
+<<label=plot1,echo=FALSE,fig=TRUE,include=FALSE>>=
+## clear workspace
+cat('\n','* Clearing Workspace','\n'); rm(list=ls())
+
+# set model parameters
+rd <- 2.83;K <- 100
+
+# set number of timesteps
+timesteps <- 200
+
+# initialize population vector, set IC
+N <- rep(0,timesteps+1); N[1] <- 10
+
+# set the plotflag to TRUE or FALSE
+PLOTFLAG <- TRUE
+
+# use a for loop to iterate
+for (t in 1:timesteps) N[t+1] <- N[t]*(1 + rd*(1 - N[t]/K))
+
+# plot the results if PLOTFLAG is TRUE
+if (PLOTFLAG) plot(1:(timesteps+1), N, 
+                   xlab="time", ylab="N",type="b", col='blue')
+@
+
+\begin{center}
+ \includegraphics[width=3in,height=3in]{Lecture02-plot1}
+\end{center}
+
+\end{frame}
+
+%%
+%% 
+\begin{frame}
+\frametitle{Logistic dynamics}
+\framesubtitle{Some lessons from the examples}
+
+  \begin{spread_item}
+    \item Start of time series looked chaotic (random)
+    \item However, dynamics settled into period-3 behavior\\[0.5em]
+      \begin{spread_item}
+        \item Careful of transient behavior
+        \item Are you interested in short- or long-term behavior?
+        \item This is an issue with {\bf both} discrete time and continuous time 
+        models
+        \item Vary initial conditions, parameters -- make lots of plots!
+      \end{spread_item}
+  \end{spread_item}
+\end{frame}
+
+%%
+%%
+\section{A pause}
+
+%%
+%% 
+\begin{frame}
+\frametitle{A pause}
+\framesubtitle{We have covered a lot of material \ldots}
+
+  \begin{spread_item}
+    \item You can do a lot now
+    \item Practice and play to gain experience\\[0.5em]
+      \begin{spread_item}
+        \item Homework provides practice
+        \item Also, start thinking about your project
+      \end{spread_item}
+    \item Use discrete time logistic model\\[0.5em]
+      \begin{spread_item}
+        \item Change $r_{d}$, $K$, $n_{0}$
+        \item Is this too much work?  Next week -- functions!
+      \end{spread_item}    
+  \end{spread_item}
+\end{frame}
+
+%%
+%%
+%%
+\end{document}
