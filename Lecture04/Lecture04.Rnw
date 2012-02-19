@@ -1,0 +1,651 @@
+%%
+%%  PRODUCE SLIDES
+\documentclass[c]{beamer}
+
+%% 
+%% PRODUCE HANDOUTS
+%\documentclass[c,handout]{beamer} %- handout version of talk
+%\usepackage{pgfpages}
+%\pgfpagesuselayout{4 on 1}[letterpaper, landscape , border shrink=5mm]
+%\pgfpagesuselayout{2 on 1}[letterpaper, border shrink=5mm]
+
+%%
+%% PACKAGES
+\usepackage[latin1]{inputenc}
+\usefonttheme{professionalfonts}
+\usepackage{times}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{verbatim}
+\usetikzlibrary{arrows,shapes}
+
+%%
+%% DOCUMENT INFORMATION
+\title{Introduction to R\\EEB C119/C219}
+\author{Christopher C. Strelioff}
+\date{Jan 2012}
+
+%%
+%% COLORS
+\definecolor{grn}{rgb}{.0941,.421,.019}
+\definecolor{blu}{rgb}{0.0,.235,.529}
+%% 
+%% ASSIGN COLORS TO FRAME COMPONENTS
+\setbeamercolor{title}{fg=grn!100,bg=white!100}
+\setbeamercolor{footline}{fg=black!100,bg=white!100}
+\setbeamercolor{frametitle}{fg=grn!100,bg=white!100}
+
+%%
+%% FOOTER SETUP
+\setbeamertemplate{footline}
+{\leavevmode
+\begin{beamercolorbox}[width=.9\paperwidth]{section in head/foot}
+\vskip2pt
+\tiny\quad Introduction to R -- EEB C119/C219
+\hfill
+\tiny\quad Slide \hskip1pt \insertframenumber \hskip2pt of \inserttotalframenumber~~
+\vskip0.5em
+\end{beamercolorbox}
+}% END setbeamertemplate footline
+
+%% 
+%% NO NAVIGATION SYMBOLS
+\setbeamertemplate{navigation symbols}{}
+
+%%
+%% NEW COMMANDS
+\newenvironment{packed_item}{
+\begin{itemize}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}{\end{itemize}}
+\newenvironment{spread_item}{
+\begin{itemize}
+  \setlength{\itemsep}{7.5pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}{\end{itemize}}
+
+%% circles for itemize
+\useinnertheme{circles}
+
+
+\begin{document}
+
+%%
+%% title
+%%
+\section{Title Slide}
+
+%%
+%%
+\begin{frame}
+
+\begin{center}
+
+{\color{grn} \huge Introduction to R\\[0.5em]Lecture 4}
+
+\vskip10pt
+
+EEB C119/C219 (Winter 2012)
+
+\vskip20pt
+
+
+\vskip15pt
+Christopher C.~Strelioff
+
+\end{center}
+
+\end{frame}
+
+%%
+%% Overview
+\section{Overview}
+
+%%
+%% 
+\begin{frame}
+\frametitle{Overview}
+
+   \begin{spread_item}
+     \item Packages\\[0.5em]
+     \begin{itemize}
+       \item What are they?
+       \item Installing packages, {\bf deSolve} in particular
+       \item What packages are loaded? Where are they located? What packages are 
+       installed on your computer?
+       \item Using packages in scripts
+     \end{itemize}
+     \item Ordinary differential equations (ODEs)\\[0.5em]
+     \begin{itemize}
+       \item Define function for use with deSolve
+       \item How to (numerically) integrate ODE
+     \end{itemize}
+     \item Examples\\[0.5em]
+     \begin{itemize}
+       \item Desity-dependent growth
+       \item Lotka-Volterra predator-prey
+     \end{itemize}
+   \end{spread_item}   
+\end{frame}
+
+%%
+%% 
+\section{Packages}
+
+%%
+%% 
+\begin{frame}
+\frametitle{Packages}
+\framesubtitle{What are they?}
+
+   \begin{spread_item}
+     \item Packages\\[0.5em]
+     \begin{itemize}
+       \item Allow expansion of R's available tools -- set of functions coded 
+       by someone else and `packaged' for you to use
+       \item Developed by many different people (universities, industry, etc.)
+       \item We will use {\bf deSolve}, a nice ODE tool
+     \end{itemize}
+     \item Other packages\\[0.5em]
+     \begin{itemize}
+       \item Browse: \url{http://cran.r-project.org/}
+       \item Link to `Packages' on left
+     \end{itemize}
+   \end{spread_item}   
+\end{frame}
+
+%%
+%% 
+\subsection{Installing}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Installing packages}
+
+   \begin{spread_item}
+     \item Can install package using interface\\[0.5em]
+     \begin{itemize}
+       \item {\bf rstudio}
+       \item Win, Mac -- interface with R install
+       \item ** Might need to run program as {\bf administrator} **
+     \end{itemize}
+     \item R command line\\[0.5em]
+     \begin{itemize}
+       \item Use command:\\[0.5em] 
+<<echo=TRUE,eval=FALSE>>=
+install.packages('packagename', dep = TRUE)
+@
+       \item ** Might need to start R as  {\bf administrator} **
+     \end{itemize}
+     \item Repository
+     \begin{itemize}
+       \item Choose repository (where packages are downloaded from) -- one is 
+       at UCLA
+     \end{itemize}
+     \item Only need to install package {\bf once}     
+   \end{spread_item}   
+\end{frame}
+
+%%
+%%
+\subsection{Package information}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Package information}
+\framesubtitle{Helpful commands}
+
+   \begin{spread_item}
+     \item What packages are installed on {\bf your computer}?\\[0.5em]
+<<echo=TRUE,eval=FALSE>>=
+library()
+@
+     \begin{itemize}
+       \item Note: these are not `loaded' and ready to use
+     \end{itemize}
+     \item What packages are `loaded' in session?\\[0.5em]
+<<echo=TRUE,eval=FALSE>>=
+search()
+@
+     \item Where does R look for packages (on your computer)?\\[0.5em]
+<<echo=TRUE,eval=FALSE>>=     
+.libPaths()
+@
+   \end{spread_item}   
+\end{frame}
+
+%%
+%%
+\subsection{Using packages}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Using packages}
+\framesubtitle{Command line and scripts}
+
+  \begin{spread_item}
+     \item To use package at command line use {\bf library} command, ex:\\[0.5em]
+{\scriptsize
+<<echo=TRUE,eval=TRUE>>=
+library(deSolve) # load deSolve
+@
+}
+     \item Again, to see what packages are loaded, type {\bf search}:\\[0.5em]
+{\scriptsize
+<<echo=TRUE,eval=TRUE>>=
+search()
+@
+}
+    \item In script, use (usually at top of file):
+{\scriptsize
+<<echo=TRUE,eval=FALSE>>=
+library(packageName)
+@
+}
+or 
+{\scriptsize
+<<echo=TRUE,eval=FALSE>>=
+require(packageName)
+@
+}
+
+  \end{spread_item}   
+\end{frame}
+
+
+%%
+%% 
+\section{deSolve}
+
+%%
+%% 
+\begin{frame}
+\frametitle{deSolve}
+\framesubtitle{Numerical integration of ODEs}
+
+   \begin{spread_item}
+     \item deSolve uses well established algorithms for numerical integration 
+     of ODEs
+     \item You don't have to worry about details (ask if interested)
+     \item Using deSolve requires specific syntax\\[0.5em]
+     \begin{itemize}
+       \item For a given ODE, have to define {\bf function} for right-hand side 
+       of ODE
+       \item We'll do both 1d and 2d today
+     \end{itemize}
+     \item Once you know the syntax, it's fairly simple to implement most ODEs
+   \end{spread_item}   
+\end{frame}
+
+%%
+%%
+\subsection{General format}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{deSolve}
+\framesubtitle{Format for lsoda}
+
+  \begin{spread_item}
+    \item \verb@lsoda@ syntax:\\[0.5em]
+<<echo=TRUE,eval=FALSE>>=
+lsoda(IC, times, ODEfunction, pars)
+@
+    \begin{itemize}
+      \item \verb@IC@: intitial condition for state variables
+      \item \verb@times@: vector of times where we want to know value of state 
+      variables
+      \item \verb@ODEfunction@: function {\bf we} define, describing ODE 
+      \item \verb@pars@: parameters for the ODE
+    \end{itemize}
+    \item We'll do examples, so hang on.
+  \end{spread_item}   
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{deSolve}
+\framesubtitle{Format for function describing ODE}
+
+  \begin{spread_item}
+    \item ODE function syntax:\\[0.5em]
+\begin{verbatim}
+ODEfunction <- function(t, y, pars) {
+  
+  derivs <- [insert model equations]
+  
+  return(list(derivs))
+}
+\end{verbatim}
+    \begin{itemize}
+      \item \verb@t@: is a variable used by R to keep track of the time
+      \item \verb@y@: is the state variable (or vector of state variables)
+      \item \verb@pars@: is a vector of model parameters
+      \item \verb@derivs@: describes right hand side (RHS) of ODE
+    \end{itemize}
+  \end{spread_item}
+\end{frame}
+
+
+%%
+%%
+\section{Examples}
+
+%%
+%%
+\subsection{Density-dependent growth}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Density-dependent growth}
+\framesubtitle{Remember the basics}
+
+  \begin{spread_item}
+    \item Equation is: \\[0.5em]
+    \[
+      \frac{dN}{dt} = r N \bigl( 1 - \frac{N}{K} \bigr)
+    \]
+    \item State variable: $N$
+    \item Parameters: $r,K$
+  \end{spread_item}
+
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Density-dependent growth}
+\framesubtitle{Define a function for the ODE}
+
+<<echo=TRUE,eval=FALSE>>=
+desDepGrowthODE <- function(t, N, pars) {
+  # dN/dt = r * N * ( 1 - N/K )	
+  dNdt <- pars['r'] * N * ( 1 - N/pars['K'])
+  
+  # return as list
+  return(list(dNdt))
+}
+@
+  \begin{spread_item}
+    \item This defines RHS of ODE, still need a script to call \verb@lsoda@ and 
+    get output
+    \item This is function, just like last lecture!
+  \end{spread_item}
+\end{frame}
+
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Density-dependent growth}
+\framesubtitle{Script to plot output from ODE -- use {\bf source}}
+
+{\scriptsize
+<<label=plot1,echo=TRUE,fig=TRUE,include=FALSE>>=
+library(deSolve) # deSolve loaded
+
+# define ODE
+desDepGrowthODE <- function(t, N, pars) {
+  # dN/dt = r * N * ( 1 - N/K )	
+  dNdt <- pars['r'] * N * ( 1 - N/pars['K'])
+  # return as list
+	return(list(dNdt))
+}
+# setup Init condition, times, parameters
+IC <- c(N=10)
+times <- seq(0, 20, by=0.1)
+pars <- c(r = 0.75, K=500)
+
+# call lsoda to get output
+output <- lsoda(IC, times, desDepGrowthODE, pars)
+
+# plot
+plot(output[,1],output[,2],type='l',xlab='t',ylab='N(t)')
+abline(h=pars['K'],lty=2)  # dashed line at y==K
+@
+}
+
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Density-dependent growth}
+\framesubtitle{Plot resulting output from script}
+
+\begin{center}
+ \includegraphics[width=3in]{Lecture04-plot1}
+\end{center}
+
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Density-dependent growth}
+\framesubtitle{What does the output look like?}
+
+{\scriptsize
+<<>>=
+# setup Init condition, times, parameters
+IC <- c(N=10)
+times <- seq(0, 20, by=0.1)
+pars <- c(r = 0.75, K=500)
+
+# call lsoda to get output
+output <- lsoda(IC, times, desDepGrowthODE, pars)
+
+# get start of output
+head(output)
+@
+}
+
+  \begin{spread_item}
+    \item Using \verb@desDepGrowthODE@, as defined on previous slide.
+  \end{spread_item}
+
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+
+\begin{center}
+{\huge Demo: \verb@Lecture04_Ex01.R@}
+\end{center}
+
+\end{frame}
+
+
+
+%%
+%%
+\subsection{Lotka-Volterra predator-prey}
+
+%%
+%%
+\begin{frame}[fragile]
+\frametitle{Lotka-Volterra predator-prey}
+\framesubtitle{PER Section 6.1,pg 162}
+
+  \begin{spread_item}
+    \item Example of predator-prey (system of ODEs)
+    \item Demonstrate deSolve implementation (not math)
+    \item Details:\\[0.5em]
+      \begin{itemize}
+        \item State variables: 
+        \begin{itemize}
+          \item $H$: prey (herbivore?)
+          \item $P$: predator
+        \end{itemize}
+        \item Parameters:
+        \begin{itemize} 
+          \item $b$: per-capita growth rate of prey
+          \item $a$: rate of encounter/eating
+          \item $e$: efficiency of prey to predator conversion
+          \item $s$: per-capita death rate of predator
+        \end{itemize}  
+      \end{itemize}
+  \end{spread_item}
+
+
+\end{frame}
+
+%%
+%%
+\begin{frame}[fragile]
+\frametitle{Lotka-Volterra predator-prey}
+\framesubtitle{Equations and meaning (PER Section 6.1,pg 162)}
+
+
+%% tikz setup
+\tikzstyle{every picture}+=[remember picture]
+\tikzstyle{na} = [baseline=-.5ex]
+
+\begin{itemize}
+    \item<alert@1> Exponential growth for prey
+        \tikz[na] \node[coordinate] (n1) {};
+\end{itemize}
+
+\begin{eqnarray*}
+\frac{dH}{dt} & = & 
+        \tikz[baseline]{
+            \node[fill=blue!20,anchor=base] (t1)
+            {$bH$};
+        } -
+        \tikz[baseline]{
+            \node[fill=red!20, ellipse,anchor=base] (t2)
+            {$aPH$};
+        } \\[0.5em]
+\frac{dP}{dt} & = & 
+        \tikz[baseline]{
+            \node[fill=red!20, ellipse,anchor=base] (t3)
+            {$eaPH$};
+        } - 
+        \tikz[baseline]{
+            \node[fill=green!20,anchor=base] (t4)
+            {$sP$};
+        }
+\end{eqnarray*}
+
+\vskip1em
+\begin{itemize}
+    \item<alert@2> Predator eats prey
+        \tikz[na]\node [coordinate] (n2) {};
+    \item<alert@3> Mortality for predator
+        \tikz[na]\node [coordinate] (n3) {};
+\end{itemize}
+
+\begin{tikzpicture}[overlay]
+        \path[->]<1-> (n1) edge [bend left] (t1);
+        \path[->]<2-> (n2) edge [bend right] (t2);
+        \path[->]<2-> (n2) edge [bend right] (t3);
+        \path[->]<3-> (n3) edge [out=0, in=-90] (t4);
+\end{tikzpicture}
+
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Lotka-Volterra predator-prey}
+\framesubtitle{Define function for ODE}
+
+{\scriptsize
+<<echo=TRUE,eval=FALSE>>=
+predPreyLVODE <- function(t, N, pars) {
+  # get state variables from N
+  H <- N[1]
+  P <- N[2]
+  
+  # dH/dt = b*H - a*P*H
+  dHdt <- pars['b'] * H - pars['a']*P*H 
+  # dP/dt = e*a*P*H - s*P
+  dPdt <- pars['e']*pars['a']*P*H - pars['s']*P
+  
+  # return as list
+  return(list(c(dHdt,dPdt)))
+}
+@
+}
+  \begin{spread_item}
+    \item Note: return of function should have same ordering as \verb@N@ vector 
+    -- $H$, then $P$ in this case
+  \end{spread_item}
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Lotka-Volterra predator-prey}
+\framesubtitle{Script to plot output}
+
+{\scriptsize
+<<label=plot2,echo=TRUE,fig=TRUE,include=FALSE>>=
+library(deSolve) # load deSolve
+predPreyLVODE <- function(t, N, pars) {
+  # get state variables from N
+  H <- N[1]; P <- N[2]
+  # dH/dt = b*H - a*P*H
+  dHdt <- pars['b'] * H - pars['a']*P*H 
+  # dP/dt = e*a*P*H - s*P
+  dPdt <- pars['e']*pars['a']*P*H - pars['s']*P
+  # return as list
+  return(list(c(dHdt,dPdt)))
+}
+# IC, time, parameters
+IC <- c(H=160,P=40); pars <- c(b=0.5,a=0.01,e=0.2,s=0.2)
+times <- seq(0,400,by=0.1)
+# run lsoda
+output <- lsoda(IC, times, predPreyLVODE, pars)
+# plot
+plot(output[,1],output[,2],type='l',lty=1, ylim=c(0,max(output[,2])),
+     xlab='t',ylab='Population Size')
+lines(output[,1],output[,3],lty=2)
+# make a legend
+legend("bottomleft", c("H(t)","P(t)"), cex=0.8, lty=c(1,2))
+@
+}
+
+\end{frame}
+
+%%
+%% 
+\begin{frame}[fragile]
+\frametitle{Lotka-Volterra predator-prey}
+\framesubtitle{Plot resulting from script}
+
+\begin{center}
+ \includegraphics[width=3in]{Lecture04-plot2}
+\end{center}
+
+\end{frame}
+
+
+%%
+%% 
+\begin{frame}[fragile]
+
+\begin{center}
+{\huge Demo: \verb@Lecture04_Ex02.R@}
+\end{center}
+
+\end{frame}
+
+
+%%
+%%
+%%
+\end{document}
+
+
+
