@@ -16,12 +16,21 @@ time was:
 + Lecture 03: 1 hour
 + Lecture 04: 1 hour
 
+## Installation ##
+
+If you are not a git and/or github user, links to the right allow for you to
+download a **zip** archive.  If you'd like to develop you own version, fork
+the repository and play away.  A clone of the repository on your local machine
+can be obtained with the usual:
+
+    $git clone git@github.com:cstrelioff/introduction_to_R_ecology.git
+
 ## How to use ##
 
-The provided files are *.Rnw* and makefiles for each lecture.  I used a
+The provided files are **.Rnw** and makefiles for each lecture.  I used a
 complete install of Tex Live 2011 (including beamer and pgf/tikz) as well as a
 current version of R.  Later versions of Tex Live should work as well. The
-lectures use Sweave to generate a *.tex* file as well as a functional *.R*
+lectures use Sweave to generate a  **.tex** file as well as a functional **.R**
 script.
 
 + If you are using Mac/Linux, you should be able to create the lecture slides
@@ -29,13 +38,13 @@ script.
 * If you don't have make available, the commands executed to generate the 
 slides are (assuming *Lecture01* is being built):
 
-  $R CMD Sweave Lecture01.Rnw 
-  $pdflatex Lecture01.tex
+    $R CMD Sweave Lecture01.Rnw 
+    $pdflatex Lecture01.tex
   
 A **.R** script containing all code from the lecture is generated using (again,
 assuming *Lecture01*):
 
-  $R CMD Stangle Lecture01.Rnw 
+    $R CMD Stangle Lecture01.Rnw 
 
 ## Help ##
 
