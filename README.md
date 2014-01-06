@@ -36,14 +36,13 @@ functional **.R** script.
 + If you are using Mac/Linux, you should be able to create the lecture slides
   by typing **make** in each lecture directory:
 
-    $make
+        $make
  
 * If you don't have make available, the commands executed to generate the 
 slides are (assuming *Lecture01* is being built):
 
-    $R CMD Sweave Lecture01.Rnw
-    
-    $pdflatex Lecture01.tex
+        $R CMD Sweave Lecture01.Rnw
+        $pdflatex Lecture01.tex
   
 An **.R** script containing all code from the lecture is generated using (again,
 assuming *Lecture01*):
