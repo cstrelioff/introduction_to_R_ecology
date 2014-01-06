@@ -1,4 +1,4 @@
-# Intoduction to R #
+# Introduction to R #
 
 This repository contains a set of lectures I developed to introduce R to
 undergraduate and graduate students for the class *Mathematical and Computational
@@ -7,18 +7,18 @@ no programming experience and start with very basic material.  Ideally, these
 lectures should be coupled with computer lab examples and homework to practice
 the material.
 
-I stopped during lecture to demostrate basic operations using the command line 
+I stopped during lecture to demonstrate basic operations using the command line 
 as well as Rstudio.  Given this presentation style, the approximate lecture 
 time was:
 
-+ Lecture 01: 1 hour 15 mins
++ Lecture 01: 1 hour 15 minutes
 + Lecture 02: 45 minutes
 + Lecture 03: 1 hour
 + Lecture 04: 1 hour
 
 ## Installation ##
 
-If you are not a git and/or github user, links to the right allow for you to
+If you are not a git or github user, links to the right allow you to
 download a **zip** archive.  If you'd like to develop you own version, fork
 the repository and play away.  A clone of the repository on your local machine
 can be obtained with the usual:
@@ -27,21 +27,25 @@ can be obtained with the usual:
 
 ## How to use ##
 
-The provided files are **.Rnw** and makefiles for each lecture.  I used a
+The provided files are **.Rnw** and **makefiles** for each lecture.  I used a
 complete install of Tex Live 2011 (including beamer and pgf/tikz) as well as a
-current version of R.  Later versions of Tex Live should work as well. The
-lectures use Sweave to generate a  **.tex** file as well as a functional **.R**
-script.
+current version of R to compile the slides.  Later versions of Tex Live should
+work as well. The lectures use Sweave to generate a  **.tex** file as well as a
+functional **.R** script.
 
 + If you are using Mac/Linux, you should be able to create the lecture slides
-  by typing **make** in each lecture directory. 
+  by typing **make** in each lecture directory:
+
+    $make
+ 
 * If you don't have make available, the commands executed to generate the 
 slides are (assuming *Lecture01* is being built):
 
-    $R CMD Sweave Lecture01.Rnw 
+    $R CMD Sweave Lecture01.Rnw
+    
     $pdflatex Lecture01.tex
   
-A **.R** script containing all code from the lecture is generated using (again,
+An **.R** script containing all code from the lecture is generated using (again,
 assuming *Lecture01*):
 
     $R CMD Stangle Lecture01.Rnw 
