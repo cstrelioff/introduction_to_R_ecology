@@ -51,21 +51,22 @@ assuming *Lecture01*):
 
 ## Potential Problems ##
 
-*2014, Nov 6*  I have am running Ubuntu 14.04 with a custom TeXLive install and
-and an install of R from the PPA.  When I tried making the slides using the
-make command I got a complaint about not finding *Sweave.sty*.
+**2014, Nov 6:**  I have am now running Ubuntu 14.04 with a custom TeXLive 2013
+and R installations.  When I tried making the slides using the
+make command I got a complaint about *not finding* **Sweave.sty**.
 
-Turns out I need to tell LaTeX where to find this file.  To do that, create 
-a directory `~/texmf/tex/latex` using
+Turns out I need to tell LaTeX where to find this file.  To do that, I created 
+a directory LaTeX searches by default:
 
     $ mkdir ~/texmf/tex/latex
 
-Then, create a link
+Then, I created a link to the Sweave.sty file (the location is good for my 
+Ubuntu 14.04 machine-- you might find it elsewhere):
 
     $ cd ~/texmf/tex/latex
     $ sudo ln -s /usr/share/R/share/texmf/tex/latex/Sweave.sty Sweave.sty
 
-That shoud fix it -- try make again.
+That fixed it for me.
 
 ## Help ##
 
