@@ -36,18 +36,36 @@ functional **.R** script.
 + If you are using Mac/Linux, you should be able to create the lecture slides
   by typing **make** in each lecture directory:
 
-        $make
+        $ make
  
 * If you don't have make available, the commands executed to generate the 
 slides are (assuming *Lecture01* is being built):
 
-        $R CMD Sweave Lecture01.Rnw
-        $pdflatex Lecture01.tex
+        $ R CMD Sweave Lecture01.Rnw
+        $ pdflatex Lecture01.tex
   
 An **.R** script containing all code from the lecture is generated using (again,
 assuming *Lecture01*):
 
-    $R CMD Stangle Lecture01.Rnw 
+    $ R CMD Stangle Lecture01.Rnw
+
+## Potential Problems ##
+
+*2014, Nov 6*  I have am running Ubuntu 14.04 with a custom TeXLive install and
+and an install of R from the PPA.  When I tried making the slides using the
+make command I got a complaint about not finding *Sweave.sty*.
+
+Turns out I need to tell LaTeX where to find this file.  To do that, create 
+a directory `~/texmf/tex/latex` using
+
+    $ mkdir ~/texmf/tex/latex
+
+Then, create a link
+
+    $ cd ~/texmf/tex/latex
+    $ sudo ln -s /usr/share/R/share/texmf/tex/latex/Sweave.sty Sweave.sty
+
+That shoud fix it -- try make again.
 
 ## Help ##
 
