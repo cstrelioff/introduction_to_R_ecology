@@ -1,6 +1,6 @@
 %%
 %%  PRODUCE SLIDES
-\documentclass[c]{beamer}
+\documentclass[unknownkeysallowed, c]{beamer}
 
 %% 
 %% PRODUCE HANDOUTS
