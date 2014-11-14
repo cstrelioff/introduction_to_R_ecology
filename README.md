@@ -51,7 +51,7 @@ assuming *Lecture01*):
 
 ## Potential Problems ##
 
-**2014, Nov 6:**  I have am now running Ubuntu 14.04 with a custom TeXLive 2013
+**2014, Nov 6:**  I am now running Ubuntu 14.04 with custom TeXLive 2013
 and R installations.  When I tried making the slides using the
 make command I got a complaint about *not finding* **Sweave.sty**.
 
